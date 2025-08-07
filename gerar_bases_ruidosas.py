@@ -6,9 +6,9 @@ import os
 CAMINHO_ORIGINAL = "datasets/compas-scores-raw.csv"
 CAMINHO_SAIDA = "datasets/"
 
-# Colunas-alvo para ruído
+# Colunas onde os ruídos são inseridos
 COLUNAS_RUIDO = ["FirstName", "LastName", "DateOfBirth"]
-PROBABILIDADE_RUIDO = 0.3  # 30% dos registros
+PROBABILIDADE_RUIDO = 0.3
 
 # --- Funções de ruído individuais ---
 def substituir_caractere(s):
@@ -37,15 +37,13 @@ def aplicar_ruido_l3(df):
         df_mod[col] = df_mod[col].apply(lambda x: truncar_string(substituir_caractere(str(x))) if random.random() < PROBABILIDADE_RUIDO else x)
     return df_mod
 
-# --- Execução principal ---
 def main():
-    # Carrega base original
+    print("Gerando bases com ruído...")
     df = pd.read_csv(CAMINHO_ORIGINAL)
 
-    # Garante que diretório de saída exista
     os.makedirs(CAMINHO_SAIDA, exist_ok=True)
 
-    # compas_l1: sem ruído
+    # compas_l1: apenas uma cópia da base original
     df.to_csv(os.path.join(CAMINHO_SAIDA, "compas_l1.csv"), index=False)
 
     # compas_l2: substituição de caracteres
@@ -56,7 +54,7 @@ def main():
     df_l3 = aplicar_ruido_l3(df)
     df_l3.to_csv(os.path.join(CAMINHO_SAIDA, "compas_l3.csv"), index=False)
 
-    print("Bases com ruído geradas com sucesso.")
+    print("Geração de bases com ruído finalizadas com sucesso.")
 
 if __name__ == "__main__":
     main()
