@@ -21,15 +21,17 @@ def normalizar_texto(s):
 def padronizar_data(d):
     if pd.isna(d):
         return None
+    d = str(d).strip()
     try:
-        data = pd.to_datetime(d, errors='coerce')
-        if pd.isna(data):
-            return None
-        if 1900 <= data.year <= datetime.now().year:
-            return data.strftime('%Y-%m-%d')
-        return None
+        # Se ano tem 2 dígitos, assume século passado
+        if len(d.split('/')[-1]) == 2:
+            data = datetime.strptime(d, "%m/%d/%y").replace(year=1900 + int(d.split('/')[-1]))
+        else:
+            data = pd.to_datetime(d, errors='coerce')
+        return data.strftime('%Y-%m-%d') if pd.notna(data) else None
     except:
         return None
+
 
 # Função para gerar chave de blocagem usando Soundex
 def gerar_chave(row):
