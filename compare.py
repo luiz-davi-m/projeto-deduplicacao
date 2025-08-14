@@ -9,7 +9,7 @@ input_base_path = 'datasets/compas_l1_preproc.csv'
 input_pares_path = 'datasets/pares_blocagem_l1.csv'
 output_comparacao_path = 'datasets/comparacao_blocagem_l1.csv'
 
-# arrega a base principal
+# Carrega a base principal
 df = pd.read_csv(input_base_path).reset_index(drop=True)
 
 # Carrega pares e garante que índices são INT
