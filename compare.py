@@ -15,7 +15,7 @@ def jw_sim(a, b):
     if pd.isnull(a) or pd.isnull(b):
         return 0.0
     try:
-        return jellyfish.jaro_winkler(str(a), str(b))
+        return jellyfish.jaro_winkler_similarity(str(a), str(b))
     except Exception:
         return 0.0
 
