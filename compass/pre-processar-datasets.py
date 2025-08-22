@@ -5,8 +5,8 @@ from datetime import datetime
 import recordlinkage.preprocessing as rl_pre
 
 # Diretórios
-input_path = 'datasets/'
-output_path = 'datasets/'
+input_path = 'compass/datasets/'
+output_path = 'compass/datasets/'
 
 # Arquivos de entrada
 arquivos = ['compas_l1.csv', 'compas_l2.csv', 'compas_l3.csv']

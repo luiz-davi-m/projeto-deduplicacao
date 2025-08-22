@@ -3,20 +3,31 @@ import random
 import os
 
 # Caminhos
-CAMINHO_ORIGINAL = "datasets/compas-scores-raw.csv"
-CAMINHO_SAIDA = "datasets/"
+CAMINHO_ORIGINAL = "compass/datasets/compas-scores-raw.csv"
+CAMINHO_SAIDA = "compass/datasets/"
 
 # Colunas onde os ruídos são inseridos
 COLUNAS_RUIDO = ["FirstName", "LastName", "DateOfBirth"]
-PROBABILIDADE_RUIDO = 0.3
+PROBABILIDADE_RUIDO_L2 = 0.4
+PROBABILIDADE_RUIDO_L3 = 0.5
 
 # --- Funções de ruído individuais ---
-def substituir_caractere_texto(s):
-    if pd.isna(s) or len(s) < 2:
-        return s
-    i = random.randint(0, len(s) - 1)
-    c = random.choice("abcdefghijklmnopqrstuvwxyz")
-    return s[:i] + c + s[i + 1:]
+def substituir_caractere_texto(value, n=4):
+    if pd.isna(value) or len(value) < 2:
+        return value
+
+    n = min(n, len(value))  # não ultrapassa o tamanho da string
+    indices = random.sample(range(len(value)), n)  # escolhe n posições únicas
+
+    value_list = list(value)
+
+    for i in indices:
+        original = value_list[i]
+        # escolhe nova letra diferente do original
+        novo_char = random.choice([c for c in "abcdefghijklmnopqrstuvwxyz" if c != original])
+        value_list[i] = novo_char
+
+    return "".join(value_list)
 
 def substituir_digito_data(s):
     if pd.isna(s) or not any(ch.isdigit() for ch in str(s)):
@@ -40,18 +51,18 @@ def aplicar_ruido_l2(df):
     df_mod = df.copy()
     for col in COLUNAS_RUIDO:
         if col == "DateOfBirth":
-            df_mod[col] = df_mod[col].apply(lambda x: substituir_digito_data(x) if random.random() < PROBABILIDADE_RUIDO else x)
+            df_mod[col] = df_mod[col].apply(lambda x: substituir_digito_data(x) if random.random() < PROBABILIDADE_RUIDO_L2 else x)
         else:
-            df_mod[col] = df_mod[col].apply(lambda x: substituir_caractere_texto(str(x)) if random.random() < PROBABILIDADE_RUIDO else x)
+            df_mod[col] = df_mod[col].apply(lambda x: substituir_caractere_texto(str(x)) if random.random() < PROBABILIDADE_RUIDO_L2 else x)
     return df_mod
 
 def aplicar_ruido_l3(df):
     df_mod = df.copy()
     for col in COLUNAS_RUIDO:
         if col == "DateOfBirth":
-            df_mod[col] = df_mod[col].apply(lambda x: substituir_digito_data(x) if random.random() < PROBABILIDADE_RUIDO else x)
+            df_mod[col] = df_mod[col].apply(lambda x: substituir_digito_data(x) if random.random() < PROBABILIDADE_RUIDO_L3 else x)
         else:
-            df_mod[col] = df_mod[col].apply(lambda x: truncar_string(substituir_caractere_texto(str(x))) if random.random() < PROBABILIDADE_RUIDO else x)
+            df_mod[col] = df_mod[col].apply(lambda x: truncar_string(substituir_caractere_texto(str(x))) if random.random() < PROBABILIDADE_RUIDO_L3 else x)
     return df_mod
 
 def main():

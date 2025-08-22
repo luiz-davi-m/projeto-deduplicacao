@@ -20,9 +20,9 @@ def jw_sim(a, b):
         return 0.0
 
 for lvl in levels:
-    input_base_path = f'datasets/compas_l{lvl}_preproc.csv'
-    input_pares_path = f'datasets/pares_blocagem_l{lvl}.csv'
-    output_comparacao_path = f'datasets/comparacao_blocagem_l{lvl}.csv'
+    input_base_path = f'compass/datasets/compas_l{lvl}_preproc.csv'
+    input_pares_path = f'compass/datasets/pares_blocagem_l{lvl}.csv'
+    output_comparacao_path = f'compass/datasets/comparacao_blocagem_l{lvl}.csv'
     
     # Checa a existência dos arquivos para não quebrar
     if not os.path.exists(input_base_path) or not os.path.exists(input_pares_path):
