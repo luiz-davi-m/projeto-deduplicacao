@@ -41,7 +41,7 @@ def classificar(caminho_csv, nome_saida):
 
     # Salva resultado
     resultado = pares_indexed.reset_index()
-    resultado.to_csv(f"cora/datasets/{nome_saida}", index=False)
+    resultado.to_csv(f"datasets/{nome_saida}", index=False)
 
     # Métricas
     verdadeiro = resultado["match_verdadeiro"]
@@ -66,5 +66,5 @@ def classificar(caminho_csv, nome_saida):
 
 
 # Processar cada base separadamente
-classificar("cora/datasets/comparacao_blocagem_cora.csv", "resultado_classificacao_cora.csv")
+classificar("datasets/comparacao_blocagem_cora.csv", "resultado_classificacao_cora.csv")
 

@@ -5,10 +5,10 @@ import re
 import recordlinkage.preprocessing as rl_pre
 
 # Diretórios
-input_path = 'cora/datasets/'
-output_path = 'cora/datasets/'
+input_path = 'datasets/'
+output_path = 'datasets/'
 
-# Arquivos de entrada
+# Arquivo de entrada
 coraDataSetPath = 'cora.csv'
 
 # Função para normalizar texto
@@ -22,36 +22,32 @@ def padronizar_data(d):
     if pd.isna(d):
         return None
     d = str(d).strip()
-
     match = re.search(r"(19|20)\d{2}", d)
     if match:
         return match.group(0)
     return None
 
-
 # Função para gerar chave de blocagem usando Soundex
-def gerar_chave(row):
+def gerar_chave_soundex(row):
     if pd.isna(row['title']) or pd.isna(row['authors']) or pd.isna(row['venue_date']):
         return None
-
     ano = row['venue_date']
-    title_soundex = rl_pre.phonetic(pd.Series([row['title']]), method='soundex').iloc[0][:2]
-    authors_soundex = rl_pre.phonetic(pd.Series([row['authors']]), method='soundex').iloc[0][:2]
+    title_code = rl_pre.phonetic(pd.Series([row['title']]), method='soundex').iloc[0]
+    authors_code = rl_pre.phonetic(pd.Series([row['authors']]), method='soundex').iloc[0]
+    return f"{title_code}{authors_code}{ano}"
 
-
-    return f"{title_soundex}{authors_soundex}{ano}"
-
-
+# Leitura do arquivo
 df = pd.read_csv(os.path.join(input_path, coraDataSetPath))
 
+# Normalização dos textos
 for col in ['title', 'authors']:
     df[col] = df[col].apply(normalizar_texto)
 
 # Padronização de datas
 df['venue_date'] = df['venue_date'].apply(padronizar_data)
 
-# Geração da chave de blocagem
-df['blocking_key'] = df.apply(gerar_chave, axis=1)
+# Geração da chave de blocagem Soundex
+df['blocking_key'] = df.apply(gerar_chave_soundex, axis=1)
 
 # Contagem de registros sem chave
 sem_chave = df['blocking_key'].isna().sum()

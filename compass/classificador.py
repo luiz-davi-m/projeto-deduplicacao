@@ -41,7 +41,7 @@ def classificar(caminho_csv, nome_saida):
 
     # Salva resultado
     resultado = pares_indexed.reset_index()
-    resultado.to_csv(f"compass/datasets/{nome_saida}", index=False)
+    resultado.to_csv(f"datasets/{nome_saida}", index=False)
 
     # Métricas
     verdadeiro = resultado["match_verdadeiro"]
@@ -66,6 +66,6 @@ def classificar(caminho_csv, nome_saida):
 
 
 # Processar cada base separadamente
-classificar("compass/datasets/comparacao_blocagem_l1.csv", "resultado_classificacao_l1.csv")
-classificar("compass/datasets/comparacao_blocagem_l2.csv", "resultado_classificacao_l2.csv")
-classificar("compass/datasets/comparacao_blocagem_l3.csv", "resultado_classificacao_l3.csv")
+classificar("datasets/comparacao_blocagem_l1.csv", "resultado_classificacao_l1.csv")
+classificar("datasets/comparacao_blocagem_l2.csv", "resultado_classificacao_l2.csv")
+classificar("datasets/comparacao_blocagem_l3.csv", "resultado_classificacao_l3.csv")
