@@ -12,8 +12,8 @@ import os
 levels = [1, 2, 3]
 
 for lvl in levels:
-    input_path = f'compass/datasets/compas_l{lvl}_preproc.csv'
-    output_pares_path = f'compass/datasets/pares_blocagem_l{lvl}.csv'
+    input_path = f'datasets/compas_l{lvl}_preproc.csv'
+    output_pares_path = f'datasets/pares_blocagem_l{lvl}.csv'
 
     # Checagem se o arquivo existe para evitar erros em ambientes em que nem todos os arquivos estejam prontos
     if not os.path.exists(input_path):
@@ -56,7 +56,7 @@ for lvl in levels:
     pares_df = pd.DataFrame(pairs_data)
 
     # Salva o resultado em CSV
-    os.makedirs('compass/datasets', exist_ok=True)
+    os.makedirs('datasets', exist_ok=True)
     pares_df.to_csv(output_pares_path, index=False)
     print(f"Arquivo de pares candidatos salvo em: {output_pares_path}")
     print(pares_df.head())
